@@ -11,7 +11,7 @@ class ReplyStreamListener(StreamListener):
         if not load_tweets():
             fetch_tweets()
             generate_model()
-        reply_msg = make_sentence()
+        reply_msg = "@{} {}".format(status.user.screen_name, make_sentence())
         if reply_msg == None: pass
         if "@iamtakagi_ai" in reply_msg:
             pass
