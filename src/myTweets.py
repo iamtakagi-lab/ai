@@ -1,4 +1,5 @@
 from constants import users, api
+import os
 
 def fetch_tweets():
     tweets = []
@@ -24,10 +25,17 @@ def fetch_tweets():
 
     print(f"{len(tweets)}tweets")
 
+    if os.path.isfile("data/tweets.txt"):
+        with open("data/tweets.txt", mode = 'r+') as current:
+            current.truncate(0)
+            current.close()
+    
     with open("data/tweets.txt", "w") as f:
         f.write("\n".join(tweets))
 
 def load_tweets():
+    if not os.path.isfile("data/tweets.txt"):
+        return []
     with open("data/tweets.txt", "r") as f:
         tweets = f.read()
     return tweets
