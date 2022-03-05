@@ -10,10 +10,10 @@ def fetch_tweets():
         while True:
             if max_id:
                 tw = api.user_timeline(
-                    screen_name=sn, trim_user=True, include_rts=False, count=100, max_id=max_id)
+                    screen_name=sn, trim_user=True, include_rts=False, count=200, max_id=max_id)
             else:
                 tw = api.user_timeline(
-                    screen_name=sn, trim_user=True, include_rts=False, count=100)
+                    screen_name=sn, trim_user=True, include_rts=False, count=200)
 
             if len(tw) < 1:
                 break
