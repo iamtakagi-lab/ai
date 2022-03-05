@@ -7,6 +7,7 @@ version: '3.8'
 
 services:
   app:
+    container_name: ai
     image: ghcr.io/iamtakagi/takagi.ai
     environment:
       HOST: 0.0.0.0
