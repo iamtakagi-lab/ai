@@ -13,7 +13,7 @@ class ReplyStreamListener(StreamListener):
             generate_model()
         reply_msg = make_sentence()
         if reply_msg == None: pass
-        if "@takagi_ai" in reply_msg:
+        if "@iamtakagi_ai" in reply_msg:
             pass
             print("This tweet contains reply to @iamtakagi_ai, skipped.")
         else:
