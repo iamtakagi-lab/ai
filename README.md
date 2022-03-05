@@ -20,5 +20,5 @@ services:
     restart: unless-stopped
 ```
 
-## LICENCE
+## LICENSE
 MIT License.
