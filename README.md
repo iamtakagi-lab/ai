@@ -9,6 +9,8 @@ services:
   app:
     container_name: ai
     image: ghcr.io/iamtakagi/takagi.ai
+    volumes:
+      - ./data:/app/data
     environment:
       HOST: 0.0.0.0
       PORT: 8080
