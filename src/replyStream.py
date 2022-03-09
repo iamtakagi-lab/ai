@@ -1,5 +1,5 @@
 from tweepy import Stream, StreamListener
-from constants import api
+from constants import API
 from generateModel import generate_model
 from makeSentence import make_sentence
 from myTweets import fetch_tweets, load_tweets
@@ -17,7 +17,7 @@ class ReplyStreamListener(StreamListener):
             pass
             print("This tweet contains reply to @iamtakagi_ai, skipped.")
         else:
-            api.update_status(reply_msg, in_reply_to_status_id=status.id)
+            API.update_status(reply_msg, in_reply_to_status_id=status.id)
             print("Sent tweet: {}".format(reply_msg))
         return True
 

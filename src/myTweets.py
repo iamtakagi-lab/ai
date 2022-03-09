@@ -1,18 +1,18 @@
-from constants import users, api
+from constants import USERS, API
 import os
 
 def fetch_tweets():
     tweets = []
 
-    for sn in users:
+    for sn in USERS:
         max_id = None
 
         while True:
             if max_id:
-                tw = api.user_timeline(
+                tw = API.user_timeline(
                     screen_name=sn, trim_user=True, include_rts=False, count=200, max_id=max_id)
             else:
-                tw = api.user_timeline(
+                tw = API.user_timeline(
                     screen_name=sn, trim_user=True, include_rts=False, count=200)
 
             if len(tw) < 1:

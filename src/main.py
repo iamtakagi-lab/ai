@@ -5,7 +5,7 @@ from myTweets import fetch_tweets, load_tweets
 from tweet import tweet
 import logging
 from replyStream import ReplyStreamListener, ReplyStream
-from constants import auth
+from constants import AUTH
 from flask_cors import CORS
 from flask import Flask, jsonify
 import os
@@ -23,7 +23,7 @@ def cron_tweet():
 @sched.scheduled_job('interval', id='reply_stream', seconds=60)
 def reply_stream():
     listener = ReplyStreamListener()
-    stream = ReplyStream(auth, listener)
+    stream = ReplyStream(AUTH, listener)
     stream.start()
 
 sched.start()
