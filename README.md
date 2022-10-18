@@ -1,9 +1,9 @@
-# takagi.AI
+# ai
 
 ## Install
 `docker-compose.yml`
 ```yml
-version: '3.8'
+version: '3.9'
 
 services:
   app:
@@ -11,15 +11,13 @@ services:
     image: ghcr.io/iamtakagi/takagi.ai
     volumes:
       - ./data:/app/data
+    env_file:
+      - ./.env
     environment:
       HOST: 0.0.0.0
       PORT: 8080
       TZ: Asia/Tokyo
-      USERS: iam_takagi
-      TWITTER_CK: xxx
-      TWITTER_CS: xxx
-      TWITTER_AT: xxx
-      TWITTER_ATS: xxx
+      USERS: yude_jp
     restart: unless-stopped
 ```
 
