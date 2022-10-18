@@ -20,11 +20,11 @@ def cron_tweet():
     tweet()
 
 
-@sched.scheduled_job('interval', id='reply_stream', seconds=60)
-def reply_stream():
-    listener = ReplyStreamListener()
-    stream = ReplyStream(AUTH, listener)
-    stream.start()
+# @sched.scheduled_job('interval', id='reply_stream', seconds=60)
+# def reply_stream():
+#     listener = ReplyStreamListener()
+#     stream = ReplyStream(AUTH, listener)
+#     stream.start()
 
 sched.start()
 app = Flask(__name__)
