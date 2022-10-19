@@ -12,10 +12,11 @@ ENV MECAB_DICTIONARY_PATH=/usr/local/lib/mecab/dic/mecab-ipadic-neologd
 
 WORKDIR /app
 
-COPY . /app/
+COPY ./requirements.txt /app/
 RUN python -m pip install --upgrade pip \
     && pip install --no-cache-dir \
     -r requirements.txt
+COPY . /app/
 
 ENTRYPOINT ["python3"]
 CMD ["src/main.py"]
