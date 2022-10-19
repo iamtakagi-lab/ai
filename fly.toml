@@ -27,3 +27,6 @@ app = "yuderobot"
     PORT = "8080"
     TZ = "Asia/Tokyo"
     USERS = "yude_jp"
+
+[build]
+  image = "ghcr.io/yuderobot/ai:latest"
