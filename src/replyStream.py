@@ -1,6 +1,8 @@
 from tweepy import Stream, StreamListener
 from constants import API
 from generateModel import generate_model
+import re
+import random
 from makeSentence import make_sentence
 from myTweets import fetch_tweets, load_tweets
 
@@ -17,7 +19,11 @@ class ReplyStreamListener(StreamListener):
             pass
             print("This tweet contains reply to @{}, skipped.".format(API.verify_credentials().screen_name))
         else:
-            API.update_status(reply_msg, in_reply_to_status_id=status.id)
+            if re.compile(r"(?:[✊👊✌✋🖐]|[ぐぱグパ]ー|ちょき|チョキ)").search(status.text):
+                reply_msg = "@{} {}".format(status.user.screen_name, random.choice(("ぐー", "ちょき", "ぱ")))
+                API.update_status(reply_msg, in_reply_to_status_id=status.id)
+            else:
+                API.update_status(reply_msg, in_reply_to_status_id=status.id)
             print("Sent tweet: {}".format(reply_msg))
         return True
 
