@@ -4,6 +4,7 @@ from makeSentence import make_sentence
 from myTweets import fetch_tweets, load_tweets
 from tweet import tweet
 import logging
+from constants import API
 from replyStream import ReplyStreamListener, ReplyStream
 from constants import AUTH
 from flask_cors import CORS
@@ -19,12 +20,11 @@ sched = BackgroundScheduler(daemon=True)
 def cron_tweet():
     tweet()
 
-
-# @sched.scheduled_job('interval', id='reply_stream', seconds=60)
-# def reply_stream():
-#     listener = ReplyStreamListener()
-#     stream = ReplyStream(AUTH, listener)
-#     stream.start()
+@sched.scheduled_job('interval', id='reply_stream', seconds=60)
+def reply_stream():
+    listener = ReplyStreamListener()
+    stream = ReplyStream(AUTH, listener)
+    stream.start()
 
 sched.start()
 app = Flask(__name__)
@@ -36,7 +36,10 @@ def api_make_sentence():
         fetch_tweets()
         generate_model()
     return jsonify({'sentence': make_sentence()})
-    
+
+@app.get("/api/me")
+def api_me():
+    return jsonify({'screen_name': API.verify_credentials().screen_name})
 
 app.run (
     threaded=True,

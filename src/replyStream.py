@@ -13,9 +13,9 @@ class ReplyStreamListener(StreamListener):
             generate_model()
         reply_msg = "@{} {}".format(status.user.screen_name, make_sentence())
         if reply_msg == None: pass
-        if "@iamtakagi_ai" in reply_msg:
+        if "@{}".format(API.verify_credentials().screen_name) in reply_msg:
             pass
-            print("This tweet contains reply to @iamtakagi_ai, skipped.")
+            print("This tweet contains reply to @{}, skipped.".format(API.verify_credentials().screen_name))
         else:
             API.update_status(reply_msg, in_reply_to_status_id=status.id)
             print("Sent tweet: {}".format(reply_msg))
@@ -23,7 +23,7 @@ class ReplyStreamListener(StreamListener):
 
     def on_error(self, status_code):
         if status_code == 420:
-            print('[Error] 420')
+            print('[Error] 420 Too Many Requests')
             return False
         else:
             print(f'[Error] {status_code}')
@@ -34,4 +34,5 @@ class ReplyStream():
         self.stream = Stream(auth=auth, listener=listener)
 
     def start(self):
-        self.stream.filter(track=["@iamtakagi_ai"])
+        print("[INFO] Started streaming: {}".format(API.verify_credentials().screen_name))
+        self.stream.filter(track=["@{}".format(API.verify_credentials().screen_name)])
