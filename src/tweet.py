@@ -5,8 +5,6 @@ from makeSentence import make_sentence
 
 import json
 
-
-
 def tweet():
     fetch_tweets()
     generate_model()
