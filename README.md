@@ -8,7 +8,7 @@ version: '3.9'
 services:
   app:
     container_name: ai
-    image: ghcr.io/iamtakagi/takagi.ai
+    image: ghcr.io/yuderobot/ai:latest
     volumes:
       - ./data:/app/data
     env_file:
