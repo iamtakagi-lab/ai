@@ -3,6 +3,8 @@ from generateModel import generate_model
 from constants import API
 from makeSentence import make_sentence
 
+import json
+
 def remover(result):
   # Load banned.json
   json_open = open('data/banned.json', 'r')
