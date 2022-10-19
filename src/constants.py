@@ -1,7 +1,7 @@
 import os
 import tweepy
 
-USERS = os.getenv("USERS", "iam_takagi").split(",")
+USERS = os.getenv("USERS", "yude_jp").split(",")
 
 AUTH = tweepy.OAuthHandler(os.environ["TWITTER_CK"],
                            os.environ["TWITTER_CS"])
