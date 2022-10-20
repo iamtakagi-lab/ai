@@ -6,6 +6,8 @@ import random
 from makeSentence import make_sentence
 import parse
 import unicodedata
+import math
+import Levenshtein
 from myTweets import fetch_tweets, load_tweets, load_tweets_line
 
 class ReplyStreamListener(StreamListener):
@@ -29,11 +31,16 @@ class ReplyStreamListener(StreamListener):
                 else:
                     bot_tweet = API.get_status(status.in_reply_to_status_id)
                     tweets = load_tweets_line()
-                    
+
                     if bot_tweet.text in tweets:
                         reply_msg = "@{} オオアオ・・・".format(status.user.screen_name)
                     else:
-                        reply_msg = "@{} ぶっぶーーーー！".format(status.user.screen_name)
+                        distance = math.inf
+                        for tweet in tweets:
+                            this_distance = Levenshtein.distance(tweet, bot_tweet.text)
+                            if distance > this_distance:
+                                distance = this_distance
+                        reply_msg = "@{} ぶっぶーーーー！\n(レーベンシュタイン距離: {})".format(status.user.screen_name, distance)
             elif "@{} info".format(API.verify_credentials().screen_name) in status.text:
                 if status.in_reply_to_status_id is None:
                     reply_msg = "@{} 取得先のツイートが存在しません。こちらから参照できるツイートに対して先程のようにリプライしてみてください。".format(status.user.screen_name)
