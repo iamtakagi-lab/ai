@@ -32,7 +32,7 @@ class ReplyStreamListener(StreamListener):
                     if parsed[1].isnumeric() and parsed[2].isnumeric():
                         reply_msg = "@{} 結果: 1人あたり".format(status.user.screen_name) + str(int(parsed[1]) / int(parsed[2])) + "円"
                     else:
-                        reply_msg = "@{} 使用法: 2130を5で割り勘".format(status.user.screen_name)
+                        reply_msg = "@{} 使用法: 2130を5で割り勘 変な値入れるな❗".format(status.user.screen_name)
             else:
                 pass
             
