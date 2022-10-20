@@ -4,6 +4,8 @@ from generateModel import generate_model
 import re
 import random
 from makeSentence import make_sentence
+import parse
+import unicodedata
 from myTweets import fetch_tweets, load_tweets
 
 class ReplyStreamListener(StreamListener):
@@ -21,9 +23,20 @@ class ReplyStreamListener(StreamListener):
         else:
             if re.compile(r"(?:[✊👊✌✋🖐]|[ぐぱグパ]ー|ちょき|チョキ|じゃんけん|ジャンケン)").search(status.text):
                 reply_msg = "@{} {}".format(status.user.screen_name, random.choice(("ぐー", "ちょき", "ぱ")))
-                API.update_status(reply_msg, in_reply_to_status_id=status.id)
+            elif re.compile(r"(割り勘|わりかん|わって|われ|わる|割って|割る|割れ)").search(status.text):
+                unicodedata.normalize("NFKC", status.text)
+                parsed = parse.parse("@{} {}を{}で{}", status.text)
+                if parsed is None:
+                    reply_msg = "@{} 使用法: 2130を5で割り勘".format(status.user.screen_name)
+                else:
+                    if parsed[1].isnumeric() and parsed[2].isnumeric():
+                        reply_msg = "@{} 結果: 1人あたり".format(status.user.screen_name) + str(int(parsed[1]) / int(parsed[2])) + "円"
+                    else:
+                        reply_msg = "@{} 使用法: 2130を5で割り勘".format(status.user.screen_name)
             else:
-                API.update_status(reply_msg, in_reply_to_status_id=status.id)
+                pass
+            
+            API.update_status(reply_msg, in_reply_to_status_id=status.id)
             print("Sent tweet: {}".format(reply_msg))
         return True
 
