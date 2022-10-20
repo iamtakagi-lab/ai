@@ -39,3 +39,10 @@ def load_tweets():
     with open("data/tweets.txt", "r") as f:
         tweets = f.read()
     return tweets
+
+def load_tweets_line():
+    if not os.path.isfile("data/tweets.txt"):
+        return []
+    with open("data/tweets.txt", "r") as f:
+        tweets = [s.strip() for s in f.readlines()]
+    return tweets
