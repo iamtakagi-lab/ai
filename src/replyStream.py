@@ -75,8 +75,11 @@ class ReplyStreamListener(StreamListener):
                         reply_msg = "@{} 使用法: 2130を5で割り勘 変な値入れるな❗".format(status.user.screen_name)
 
             elif re.compile(r"\d{1,2}d\d{1,3}|\d{1,2}D\d{1,3}").search(status.text):
-                dice = parse.parse('@{} {}{}{}', status.text)
-                reply_msg = "@{} {}".format(status.user.screen_name, simple_dice(dice[3], dice[1]))
+                dice = parse.parse('@{} {}d{}', status.text)
+                if dice is None:
+                    dice = parse.parse('@{} {}D{}', status.text)
+                
+                reply_msg = "@{} {}".format(status.user.screen_name, simple_dice(dice[2], dice[1]))
 
             else:
                 pass
