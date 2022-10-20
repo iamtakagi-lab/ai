@@ -5,11 +5,13 @@ import re
 import random
 from makeSentence import make_sentence
 import parse
+import platform
 import unicodedata
 import math
 import Levenshtein
 from dice import simple_dice
 from myTweets import fetch_tweets, load_tweets, load_tweets_line
+from hash import get_hash
 
 class ReplyStreamListener(StreamListener):
 
@@ -80,6 +82,9 @@ class ReplyStreamListener(StreamListener):
                     dice = parse.parse('@{} {}D{}', status.text)
                 
                 reply_msg = "@{} {}".format(status.user.screen_name, simple_dice(dice[2], dice[1]))
+
+            elif "ver" in status.text:
+                reply_msg = "@{} 🤖 ai (https://github.com/yuderobot/ai {}) on {}, {}, {}".format(status.user.screen_name, get_hash(), platform.platform(), platform.python_implementation(), platform.python_version())
 
             else:
                 pass
