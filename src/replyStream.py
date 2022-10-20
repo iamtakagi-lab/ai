@@ -19,7 +19,7 @@ class ReplyStreamListener(StreamListener):
             pass
             print("This tweet contains reply to @{}, skipped.".format(API.verify_credentials().screen_name))
         else:
-            if re.compile(r"(?:[✊👊✌✋🖐]|[ぐぱグパ]ー|ちょき|チョキ)").search(status.text):
+            if re.compile(r"(?:[✊👊✌✋🖐]|[ぐぱグパ]ー|ちょき|チョキ|じゃんけん|ジャンケン)").search(status.text):
                 reply_msg = "@{} {}".format(status.user.screen_name, random.choice(("ぐー", "ちょき", "ぱ")))
                 API.update_status(reply_msg, in_reply_to_status_id=status.id)
             else:
