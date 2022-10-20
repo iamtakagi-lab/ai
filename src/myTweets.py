@@ -1,5 +1,6 @@
 from constants import USERS, API
 import os
+import random
 
 def fetch_tweets():
     tweets = []
@@ -19,7 +20,7 @@ def fetch_tweets():
                 break
             max_id = tw[-1].id - 1
 
-            [tweets.append(tweet.text)
+            [tweets.append(tweet.text.replace("\n", ""))
                 for tweet in tw if "http" not in tweet.text and "@" not in tweet.text]
         print(f"{sn} done")
 
@@ -45,4 +46,8 @@ def load_tweets_line():
         return []
     with open("data/tweets.txt", "r") as f:
         tweets = [s.strip() for s in f.readlines()]
+        tweets = list(filter(None, tweets))
     return tweets
+
+def random_tweet():
+    return random.choice(load_tweets_line())
