@@ -80,6 +80,9 @@ class ReplyStreamListener(StreamListener):
 
             else:
                 pass
+            
+            if (len(reply_msg) > 130):
+                reply_msg = reply_msg[:120] + " ... (省略されました)"
 
             API.update_status(reply_msg, in_reply_to_status_id=status.id)
             print("Sent tweet: {}".format(reply_msg))
