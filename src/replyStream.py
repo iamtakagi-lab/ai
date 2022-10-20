@@ -23,6 +23,22 @@ class ReplyStreamListener(StreamListener):
         else:
             if re.compile(r"(?:[✊👊✌✋🖐]|[ぐぱグパ]ー|ちょき|チョキ|じゃんけん|ジャンケン)").search(status.text):
                 reply_msg = "@{} {}".format(status.user.screen_name, random.choice(("ぐー", "ちょき", "ぱ")))
+            elif "@{} info".format(API.verify_credentials().screen_name) in status.text:
+                if status.in_reply_to_status_id is None:
+                    reply_msg = "@{} 取得先のツイートが存在しません。こちらから参照できるツイートに対して先程のようにリプライしてみてください。".format(status.user.screen_name)
+                else:
+                    this_tweet = API.get_status(status.in_reply_to_status_id)
+                    if this_tweet is None:
+                        reply_msg = "@{} ツイートの情報を取得できませんでした。".format(status.user.screen_name)
+                    else:
+                        reply_msg = """
+                                    @{} ツイートの情報\n・ID: {}\n・日時: {}\n・クライアント: {}
+                                    """.format(
+                                        status.user.screen_name,
+                                        this_tweet.id,
+                                        str(this_tweet.created_at),
+                                        this_tweet.source
+                                    )
             elif re.compile(r"(割り勘|わりかん|わって|われ|わる|割って|割る|割れ)").search(status.text):
                 unicodedata.normalize("NFKC", status.text)
                 parsed = parse.parse("@{} {}を{}で{}", status.text)
