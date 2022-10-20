@@ -8,6 +8,7 @@ import parse
 import unicodedata
 import math
 import Levenshtein
+from dice import simple_dice
 from myTweets import fetch_tweets, load_tweets, load_tweets_line
 
 class ReplyStreamListener(StreamListener):
@@ -18,10 +19,13 @@ class ReplyStreamListener(StreamListener):
             fetch_tweets()
             generate_model()
         reply_msg = "@{} {}".format(status.user.screen_name, make_sentence())
+
         if reply_msg == None: pass
+
         if "@{}".format(API.verify_credentials().screen_name) in reply_msg:
             pass
             print("This tweet contains reply to @{}, skipped.".format(API.verify_credentials().screen_name))
+
         else:
             if re.compile(r"(?:[✊👊✌✋🖐]|[ぐぱグパ]ー|ちょき|チョキ|じゃんけん|ジャンケン)").search(status.text):
                 reply_msg = "@{} {}".format(status.user.screen_name, random.choice(("ぐー", "ちょき", "ぱ")))
@@ -41,6 +45,7 @@ class ReplyStreamListener(StreamListener):
                             if distance > this_distance:
                                 distance = this_distance
                         reply_msg = "@{} ぶっぶーーーー！\n(レーベンシュタイン距離: {})".format(status.user.screen_name, distance)
+
             elif "@{} info".format(API.verify_credentials().screen_name) in status.text:
                 if status.in_reply_to_status_id is None:
                     reply_msg = "@{} 取得先のツイートが存在しません。こちらから参照できるツイートに対して先程のようにリプライしてみてください。".format(status.user.screen_name)
@@ -57,6 +62,7 @@ class ReplyStreamListener(StreamListener):
                                         str(this_tweet.created_at),
                                         this_tweet.source
                                     )
+  
             elif re.compile(r"(割り勘|わりかん|わって|われ|わる|割って|割る|割れ)").search(status.text):
                 unicodedata.normalize("NFKC", status.text)
                 parsed = parse.parse("@{} {}を{}で{}", status.text)
@@ -67,9 +73,14 @@ class ReplyStreamListener(StreamListener):
                         reply_msg = "@{} 結果: 1人あたり".format(status.user.screen_name) + str(int(parsed[1]) / int(parsed[2])) + "円"
                     else:
                         reply_msg = "@{} 使用法: 2130を5で割り勘 変な値入れるな❗".format(status.user.screen_name)
+
+            elif re.compile(r"\d{1,2}d\d{1,3}|\d{1,2}D\d{1,3}").search(status.text):
+                dice = parse.parse('@{} {}{}{}', status.text)
+                reply_msg = "@{} {}".format(status.user.screen_name, simple_dice(dice[3], dice[1]))
+
             else:
                 pass
-            
+
             API.update_status(reply_msg, in_reply_to_status_id=status.id)
             print("Sent tweet: {}".format(reply_msg))
         return True
