@@ -24,12 +24,16 @@ class ReplyStreamListener(StreamListener):
             if re.compile(r"(?:[✊👊✌✋🖐]|[ぐぱグパ]ー|ちょき|チョキ|じゃんけん|ジャンケン)").search(status.text):
                 reply_msg = "@{} {}".format(status.user.screen_name, random.choice(("ぐー", "ちょき", "ぱ")))
             elif re.compile(r"(びんご|ビンゴ)").search(status.text):
-                tweets = load_tweets_line()
-                bot_tweet = API.get_status(status.in_reply_to_status_id)
-                if bot_tweet.text in tweets:
-                    reply_msg = "@{} オオアオ・・・".format(status.user.screen_name)
+                if status.in_reply_to_status_id is None:
+                    reply_msg = "@{} なにが？".format(status.user.screen_name)
                 else:
-                    reply_msg = "@{} ぶっぶーーーー！".format(status.user.screen_name)
+                    bot_tweet = API.get_status(status.in_reply_to_status_id)
+                    tweets = load_tweets_line()
+                    
+                    if bot_tweet.text in tweets:
+                        reply_msg = "@{} オオアオ・・・".format(status.user.screen_name)
+                    else:
+                        reply_msg = "@{} ぶっぶーーーー！".format(status.user.screen_name)
             elif "@{} info".format(API.verify_credentials().screen_name) in status.text:
                 if status.in_reply_to_status_id is None:
                     reply_msg = "@{} 取得先のツイートが存在しません。こちらから参照できるツイートに対して先程のようにリプライしてみてください。".format(status.user.screen_name)
