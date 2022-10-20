@@ -6,7 +6,7 @@ import random
 from makeSentence import make_sentence
 import parse
 import unicodedata
-from myTweets import fetch_tweets, load_tweets
+from myTweets import fetch_tweets, load_tweets, load_tweets_line
 
 class ReplyStreamListener(StreamListener):
 
@@ -23,6 +23,13 @@ class ReplyStreamListener(StreamListener):
         else:
             if re.compile(r"(?:[✊👊✌✋🖐]|[ぐぱグパ]ー|ちょき|チョキ|じゃんけん|ジャンケン)").search(status.text):
                 reply_msg = "@{} {}".format(status.user.screen_name, random.choice(("ぐー", "ちょき", "ぱ")))
+            elif re.compile(r"(びんご|ビンゴ)").search(status.text):
+                tweets = load_tweets_line()
+                bot_tweet = API.get_status(status.in_reply_to_status_id)
+                if bot_tweet.text in tweets:
+                    reply_msg = "@{} オオアオ・・・".format(status.user.screen_name)
+                else:
+                    reply_msg = "@{} ぶっぶーーーー！".format(status.user.screen_name)
             elif "@{} info".format(API.verify_credentials().screen_name) in status.text:
                 if status.in_reply_to_status_id is None:
                     reply_msg = "@{} 取得先のツイートが存在しません。こちらから参照できるツイートに対して先程のようにリプライしてみてください。".format(status.user.screen_name)
