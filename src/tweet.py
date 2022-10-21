@@ -19,6 +19,8 @@ def tweet():
     else:
         new_tweet = random_tweet()
     
+    print("[INFO] Trying to tweet: \"{}\"".format(new_tweet))
+
     try:
         API.update_status(status = new_tweet)
     except tweepy.TweepError as error:
