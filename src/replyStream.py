@@ -29,8 +29,11 @@ class ReplyStreamListener(StreamListener):
             print("This tweet contains reply to @{}, skipped.".format(API.verify_credentials().screen_name))
 
         else:
+            # じゃんけん
             if re.compile(r"(?:[✊👊✌✋🖐]|[ぐぱグパ]ー|ちょき|チョキ|じゃんけん|ジャンケン)").search(status.text):
                 reply_msg = "@{} {}".format(status.user.screen_name, random.choice(("ぐー", "ちょき", "ぱ")))
+            
+            # Bingo
             elif re.compile(r"(びんご|ビンゴ)").search(status.text):
                 if status.in_reply_to_status_id is None:
                     reply_msg = "@{} なにが？".format(status.user.screen_name)
@@ -48,6 +51,7 @@ class ReplyStreamListener(StreamListener):
                                 distance = this_distance
                         reply_msg = "@{} ぶっぶーーーー！\n(レーベンシュタイン距離: {})".format(status.user.screen_name, distance)
 
+            # Retrieve tweet information
             elif "@{} info".format(API.verify_credentials().screen_name) in status.text:
                 if status.in_reply_to_status_id is None:
                     reply_msg = "@{} 取得先のツイートが存在しません。こちらから参照できるツイートに対して先程のようにリプライしてみてください。".format(status.user.screen_name)
@@ -65,6 +69,7 @@ class ReplyStreamListener(StreamListener):
                                         this_tweet.source
                                     )
   
+            # 割り勘
             elif re.compile(r"(割り勘|わりかん|わって|われ|わる|割って|割る|割れ)").search(status.text):
                 unicodedata.normalize("NFKC", status.text)
                 parsed = parse.parse("@{} {}を{}で{}", status.text)
@@ -76,6 +81,7 @@ class ReplyStreamListener(StreamListener):
                     else:
                         reply_msg = "@{} 使用法: 2130を5で割り勘 変な値入れるな❗".format(status.user.screen_name)
 
+            # Dice rolling
             elif re.compile(r"\d{1,2}d\d{1,3}|\d{1,2}D\d{1,3}").search(status.text):
                 dice = parse.parse('@{} {}d{}', status.text)
                 if dice is None:
@@ -83,12 +89,14 @@ class ReplyStreamListener(StreamListener):
                 
                 reply_msg = "@{} {}".format(status.user.screen_name, simple_dice(dice[2], dice[1]))
 
+            # Version info
             elif "ver" in status.text:
                 reply_msg = "@{} 🤖 ai (https://github.com/yuderobot/ai {}) on {}, {}, {}".format(status.user.screen_name, get_hash(), platform.platform(), platform.python_implementation(), platform.python_version())
 
             else:
                 pass
             
+            # Truncate reply message if it exceeds 130 chars
             if (len(reply_msg) > 130):
                 reply_msg = reply_msg[:120] + " ... (省略されました)"
 
@@ -97,8 +105,8 @@ class ReplyStreamListener(StreamListener):
         return True
 
     def on_error(self, status_code):
-        if status_code == 420:
-            print('[Error] 420 Too Many Requests')
+        if status_code == 420: # 420: Too Many Requests
+            print('[Error] 420')
             return False
         else:
             print(f'[Error] {status_code}')

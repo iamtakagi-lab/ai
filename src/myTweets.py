@@ -34,14 +34,14 @@ def fetch_tweets():
     with open("data/tweets.txt", "w") as f:
         f.write("\n".join(tweets))
 
-def load_tweets():
+def load_tweets(): # Return tweets as string
     if not os.path.isfile("data/tweets.txt"):
         return []
     with open("data/tweets.txt", "r") as f:
         tweets = f.read()
     return tweets
 
-def load_tweets_line():
+def load_tweets_line(): # Return tweets as array
     if not os.path.isfile("data/tweets.txt"):
         return []
     with open("data/tweets.txt", "r") as f:
@@ -49,5 +49,5 @@ def load_tweets_line():
         tweets = list(filter(None, tweets))
     return tweets
 
-def random_tweet():
+def random_tweet(): # Return random one tweet as string
     return random.choice(load_tweets_line())

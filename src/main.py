@@ -17,22 +17,27 @@ logging.basicConfig(level=logging.DEBUG)
 
 sched = BackgroundScheduler(daemon=True)
 
+# Regular tweet; 15 min interval
 @sched.scheduled_job('cron', id='tweet', minute='*/15')
 def cron_tweet():
     tweet()
 
-# @sched.scheduled_job('interval', id='reply_stream', seconds=60)
+# Reply streaming
 def reply_stream():
     listener = ReplyStreamListener()
     stream = ReplyStream(AUTH, listener)
     stream.start()
 
+# Start reply streaming as thread
 sched.start()
 stream_thread = threading.Thread(target=reply_stream, name="stream")
 stream_thread.start()
+
+# Flask app for JSON api, etc.
 app = Flask(__name__)
 CORS(app)
 
+# Endpoint for `/api/make_sentence`
 @app.get("/api/make_sentence")
 def api_make_sentence():
     if not load_tweets():
@@ -40,10 +45,12 @@ def api_make_sentence():
         generate_model()
     return jsonify({'sentence': make_sentence()})
 
+# Endpoint for `/api/me`
 @app.get("/api/me")
 def api_me():
     return jsonify({'screen_name': API.verify_credentials().screen_name})
 
+# Run Flask app
 app.run (
     threaded=True,
     host = os.environ["HOST"], 

@@ -1,6 +1,7 @@
 import markovify
 import json
 
+# Remover for sensitive words
 def remover(result):
   # Load banned.json
   json_open = open('data/banned.json', 'r')
@@ -9,6 +10,7 @@ def remover(result):
     result = result.replace(w, '')
   return result
 
+# Generate sentence from the target model
 def make_sentence():
     with open("data/model.json", "r") as f:
         textModel = markovify.Text.from_json(f.read())
