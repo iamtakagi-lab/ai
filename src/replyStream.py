@@ -123,4 +123,8 @@ class ReplyStream():
 
     def start(self):
         print("[INFO] Started streaming: {}".format(API.verify_credentials().screen_name))
-        self.stream.filter(track=["@{}".format(API.verify_credentials().screen_name)])
+        try:
+            self.stream.filter(track=["@{}".format(API.verify_credentials().screen_name)])
+        except Exception:
+            print("[INFO] Restarted streaming: {}".format(API.verify_credentials().screen_name))
+            self.start()
