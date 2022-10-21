@@ -10,6 +10,9 @@ def fetch_tweets():
 
         while True:
             if max_id:
+                # Ignoring this error, because Twitter sometimes returns internal error
+                # for extreme random reason, and we want to tweet something regardless of success of
+                # retrieving tweets
                 try:
                     tw = API.user_timeline(
                         screen_name=sn, trim_user=True, include_rts=False, count=200, max_id=max_id)
