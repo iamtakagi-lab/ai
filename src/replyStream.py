@@ -12,6 +12,7 @@ import Levenshtein
 from dice import simple_dice
 from myTweets import fetch_tweets, load_tweets, load_tweets_line
 from hash import get_hash
+from uptime import get_uptime
 
 class ReplyStreamListener(StreamListener):
 
@@ -92,6 +93,10 @@ class ReplyStreamListener(StreamListener):
             # Version info
             elif "ver" in status.text:
                 reply_msg = "@{} 🤖 ai (https://github.com/yuderobot/ai {}) on {}, {}, {}".format(status.user.screen_name, get_hash(), platform.platform(), platform.python_implementation(), platform.python_version())
+
+            # Uptime
+            elif "up" in status.text:
+                reply_msg = "@{} ⌚ 稼働時間: {}".format(status.user.screen_name, get_uptime())
 
             else:
                 pass
