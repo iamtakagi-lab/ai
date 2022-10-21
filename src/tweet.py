@@ -3,6 +3,7 @@ from generateModel import generate_model
 from constants import API
 from makeSentence import make_sentence
 
+import tweepy
 import numpy as np
 import json
 
