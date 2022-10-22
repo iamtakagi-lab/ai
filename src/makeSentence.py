@@ -4,7 +4,7 @@ import json
 # Remover for sensitive words
 def remover(result):
   # Load banned.json
-  json_open = open('data/banned.json', 'r')
+  json_open = open('banned.json', 'r')
   json_load = json.load(json_open)
   for w in json_load['words']:
     result = result.replace(w, '')

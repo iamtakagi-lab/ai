@@ -1,6 +1,6 @@
 # fly.toml file generated for red-violet-2800 on 2022-10-22T09:07:25+09:00
 
-app = "ai"
+app = "nameless-darkness-587"
 
 [env]
   HOST = "0.0.0.0"
@@ -29,4 +29,4 @@ app = "ai"
 
 [mounts]
   source="ai_data"
-  destination="/data"
+  destination="/app/data"
