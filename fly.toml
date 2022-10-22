@@ -26,3 +26,7 @@ app = "ai"
   [[services.tcp_checks]]
     interval = 10000
     timeout = 2000
+
+[mounts]
+  source="ai_data"
+  destination="/data"
