@@ -9,6 +9,8 @@ def fetch_tweets():
         max_id = None
 
         while True:
+            tw = ""
+            
             if max_id:
                 # Ignoring this error, because Twitter sometimes returns internal error
                 # for extreme random reason, and we want to tweet something regardless of success of
