@@ -1,11 +1,16 @@
-# fly.toml file generated for yuderobot on 2022-10-18T16:20:39+09:00
+# fly.toml file generated for red-violet-2800 on 2022-10-22T09:07:25+09:00
 
-app = "yuderobot"
+app = "ai"
+
+[env]
+  HOST = "0.0.0.0"
+  PORT = "8080"
+  TZ = "Asia/Tokyo"
+  USERS = "yude_jp"
 
 [[services]]
   internal_port = 8080
   protocol = "tcp"
-
   [services.concurrency]
     hard_limit = 25
     soft_limit = 20
@@ -21,12 +26,3 @@ app = "yuderobot"
   [[services.tcp_checks]]
     interval = 10000
     timeout = 2000
-
-[env]
-    HOST = "0.0.0.0"
-    PORT = "8080"
-    TZ = "Asia/Tokyo"
-    USERS = "yude_jp"
-
-[build]
-  image = "ghcr.io/yuderobot/ai:latest"
