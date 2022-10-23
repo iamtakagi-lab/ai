@@ -9,7 +9,7 @@ from constants import API
 from replyStream import ReplyStream
 from constants import AUTH
 from flask_cors import CORS
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 import os
 import numpy as np
 import threading
@@ -39,7 +39,7 @@ CORS(app)
 
 @app.get("/")
 def home():
-   return render_template('htdocs/index.html', me=API.verify_credentials().screen_name)
+   return render_template('index.html', me=API.verify_credentials().screen_name)
 
 # Endpoint for `/api/make_sentence`
 @app.get("/api/make_sentence")
