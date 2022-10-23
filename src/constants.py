@@ -13,6 +13,7 @@ AUTH.set_access_token(os.environ["TWITTER_AT"],
 
 # Tweepy API handler as global
 API = tweepy.API(AUTH)
+CLIENT = tweepy.Client(bearer_token=os.environ["TWITTER_BEARER"], consumer_key=os.environ["TWITTER_CK"], consumer_secret=os.environ["TWITTER_CS"], access_token=os.environ["TWITTER_AT"], access_token_secret=os.environ["TWITTER_ATS"])
 
 # The datetime app started
 STARTED = datetime.datetime.utcnow()

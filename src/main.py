@@ -3,15 +3,16 @@ from generateModel import generate_model
 from makeSentence import make_sentence
 from myTweets import fetch_tweets, load_tweets
 from tweet import tweet
+import tweepy
 import logging
-import threading
 from constants import API
-from replyStream import ReplyStreamListener, ReplyStream
+from replyStream import ReplyStream
 from constants import AUTH
 from flask_cors import CORS
 from flask import Flask, jsonify
 import os
 import numpy as np
+import threading
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -24,11 +25,10 @@ def cron_tweet():
 
 # Reply streaming
 def reply_stream():
-    listener = ReplyStreamListener()
-    stream = ReplyStream(AUTH, listener)
-    stream.start()
+    client = ReplyStream(bearer_token=os.environ["TWITTER_BEARER"])
+    client.add_rules(tweepy.StreamRule("@{}".format(API.verify_credentials().screen_name)))
+    client.filter(expansions=["author_id"])
 
-# Start reply streaming as thread
 sched.start()
 stream_thread = threading.Thread(target=reply_stream, name="stream")
 stream_thread.start()
