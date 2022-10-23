@@ -10,7 +10,7 @@ def fetch_tweets():
 
         while True:
             tw = ""
-            
+
             if max_id:
                 # Ignoring this error, because Twitter sometimes returns internal error
                 # for extreme random reason, and we want to tweet something regardless of success of
@@ -38,21 +38,21 @@ def fetch_tweets():
     print(f"{len(tweets)}tweets")
 
     if os.path.isfile("data/tweets.txt"):
-        with open("data/tweets.txt", mode = 'r+') as current:
+        with open("data/tweets.txt", mode='r+') as current:
             current.truncate(0)
             current.close()
-    
+
     with open("data/tweets.txt", "w") as f:
         f.write("\n".join(tweets))
 
-def load_tweets(): # Return tweets as string
+def load_tweets():  # Return tweets as string
     if not os.path.isfile("data/tweets.txt"):
         return []
     with open("data/tweets.txt", "r") as f:
         tweets = f.read()
     return tweets
 
-def load_tweets_line(): # Return tweets as array
+def load_tweets_line():  # Return tweets as array
     if not os.path.isfile("data/tweets.txt"):
         return []
     with open("data/tweets.txt", "r") as f:
@@ -60,5 +60,5 @@ def load_tweets_line(): # Return tweets as array
         tweets = list(filter(None, tweets))
     return tweets
 
-def random_tweet(): # Return random one tweet as string
+def random_tweet():  # Return random one tweet as string
     return random.choice(load_tweets_line())

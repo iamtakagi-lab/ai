@@ -1,5 +1,6 @@
-import datetime, time
-from constants import STARTED 
+import datetime
+import time
+from constants import STARTED
 
 def get_uptime():
     delta = datetime.datetime.utcnow() - STARTED
@@ -8,3 +9,6 @@ def get_uptime():
     days, hours = divmod(hours, 24)
     uptime = ("{} days, {:0=2}:{:0=2}:{:0=2}".format(days, hours, minutes, seconds))
     return uptime
+
+def get_uptime_fmt():
+    return "⌚ 稼働時間: {}".format(get_uptime())

@@ -29,6 +29,7 @@ def reply_stream():
     client.add_rules(tweepy.StreamRule("@{}".format(API.verify_credentials().screen_name)))
     client.filter(expansions=["author_id"])
 
+
 sched.start()
 stream_thread = threading.Thread(target=reply_stream, name="stream")
 stream_thread.start()
@@ -39,7 +40,7 @@ CORS(app)
 
 @app.get("/")
 def home():
-   return render_template('index.html', me=API.verify_credentials().screen_name)
+    return render_template('index.html', me=API.verify_credentials().screen_name)
 
 # Endpoint for `/api/make_sentence`
 @app.get("/api/make_sentence")
@@ -54,10 +55,11 @@ def api_make_sentence():
 def api_me():
     return jsonify({'screen_name': API.verify_credentials().screen_name})
 
+
 # Run Flask app
-app.run (
+app.run(
     threaded=True,
-    host = os.environ["HOST"], 
-    port = os.environ["PORT"], 
+    host=os.environ["HOST"],
+    port=os.environ["PORT"],
     debug=False
 )
