@@ -100,7 +100,7 @@ class ReplyStream(StreamingClient):
             if (len(reply_msg) > 130):
                 reply_msg = reply_msg[:120] + " ... (省略されました)"
 
-            if "@{}".format(API.verify_credentials().screen_name) in reply_msg:
+            if tweet.author_id == API.verify_credentials().id:
                 pass
             else:
                 API.update_status(reply_msg, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
