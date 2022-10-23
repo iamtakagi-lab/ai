@@ -37,6 +37,10 @@ stream_thread.start()
 app = Flask(__name__)
 CORS(app)
 
+@app.get("/")
+def home():
+   return render_template('htdocs/index.html', me=API.verify_credentials().screen_name)
+
 # Endpoint for `/api/make_sentence`
 @app.get("/api/make_sentence")
 def api_make_sentence():
