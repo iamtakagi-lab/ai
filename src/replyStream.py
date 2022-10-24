@@ -15,7 +15,7 @@ class ReplyStream(StreamingClient):
                 try:
                     reply_msg = generate_reply(tweet.text, tweet.conversation_id)
                 except Exception as e:
-                    reply_msg = "問題が発生しました ({}, 照会甩コード: {}".format(e.args[0], get_reference_code())
+                    reply_msg = "問題が発生しました ({}, 照会甩コード: {})".format(e.args[0], get_reference_code())
 
                 if reply_msg is None:
                     print("[info] reply_msg is None. Skipping.")
