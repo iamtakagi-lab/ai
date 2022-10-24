@@ -15,7 +15,7 @@ def get_bingo(source_conversation_id=None):
         else:
             distance = math.inf
             for tweet in source_tweets:
-                this_distance = Levenshtein.distance(tweet, bot_tweet)
+                this_distance = Levenshtein.distance(tweet, bot_tweet.text)
                 if distance > this_distance:
                     distance = this_distance
             reply_msg = "ぶっぶーーーー！\n(レーベンシュタイン距離: {})".format(distance)
