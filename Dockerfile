@@ -1,7 +1,7 @@
-FROM python:3.9.6
+FROM python:3.10.8-bullseye
 
 RUN apt update
-RUN apt install -y mecab libmecab-dev mecab-ipadic-utf8 swig cron
+RUN apt install -y mecab libmecab-dev mecab-ipadic-utf8 swig
 RUN git clone --depth=1 https://github.com/neologd/mecab-ipadic-neologd
 RUN cd ./mecab-ipadic-neologd && ./bin/install-mecab-ipadic-neologd -y -p /var/lib/mecab/dic/mecab-ipadic-neologd
 RUN rm -rf ./mecab-ipadic-neologd
