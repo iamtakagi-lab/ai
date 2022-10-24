@@ -25,8 +25,5 @@ def tweet():
     try:
         API.update_status(status=new_tweet)
 
-    except tweepy.TweepError as error:
-        if error.api_code == 187:  # 187: "Status is a duplicate."
-            tweet()  # Re-try tweet by using another sentence
-        else:
-            tweet()  # Re-try tweet by using another sentence
+    except Exception:  # Re-try tweet by using another sentence
+        tweet()
