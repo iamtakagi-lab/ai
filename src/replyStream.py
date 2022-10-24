@@ -1,7 +1,7 @@
 from tweepy import StreamingClient
 from constants import API, CLIENT
 from generateReply import generate_reply
-from utils import get_reference_code
+from utils import get_reference_code, get_twitter_text_count
 
 class ReplyStream(StreamingClient):
     def on_tweet(self, tweet):
@@ -20,9 +20,9 @@ class ReplyStream(StreamingClient):
                 if reply_msg is None:
                     print("[info] reply_msg is None. Skipping.")
 
-                # Truncate reply message if it exceeds 130 chars
-                if (len(reply_msg) > 130):
-                    reply_msg = reply_msg[:120] + " ... (省略されました)"
+                # Truncate reply message if it exceeds 260 chars
+                if (get_twitter_text_count(reply_msg) > 260):
+                    reply_msg = reply_msg[:260] + " ... (省略されました)"
 
                 else:
                     API.update_status(reply_msg, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
