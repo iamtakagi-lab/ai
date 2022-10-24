@@ -1,4 +1,5 @@
 from constants import API
+from utils import datetime_format
 
 def get_tweet_info(source_conversation_id):
     if source_conversation_id is None:
@@ -9,7 +10,7 @@ def get_tweet_info(source_conversation_id):
             reply_msg = "ツイートの情報を取得できませんでした。"
         else:
             reply_msg = """
-                ツイートの情報\n・ID: {}\n・日時: {}\n・クライアント: {}
-                """.format(this_tweet.id, str(this_tweet.created_at), this_tweet.source)
+                - ツイート ID: {}\n- 作者 ID: {}\n- 日時: {}\n- クライアント: {}
+                """.format(this_tweet.id, this_tweet.user.id_str, datetime_format(this_tweet.created_at), this_tweet.source)
 
     return reply_msg

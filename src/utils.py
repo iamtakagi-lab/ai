@@ -4,6 +4,8 @@ import platform
 import os
 from twitter_text import parse_tweet
 from hash import get_hash
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 def get_reference_code(length=10):
     # choose from all lowercase letter
@@ -25,3 +27,14 @@ def get_twitter_text_count(text):
     except Exception:
         result = 280
     return result
+
+def datetime_format(dt):
+    dt = dt.astimezone(ZoneInfo(os.environ["TZ"]))
+
+    try:
+        dt_fmt = dt.strftime("%Y/%-m/%-d %-H:%M:%S")
+        dt_fmt += " {}".format(dt.tzname())
+    except Exception:
+        dt_fmt = None
+
+    return dt_fmt
