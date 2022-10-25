@@ -26,7 +26,7 @@ def cron_tweet():
 # Reply streaming
 def reply_stream():
     client = ReplyStream(bearer_token=os.environ["TWITTER_BEARER"])
-    client.add_rules(tweepy.StreamRule("@{}".format(API.verify_credentials().screen_name)))
+    client.add_rules(tweepy.StreamRule("@{} -from:{} -filter:retweets".format(API.verify_credentials().screen_name, API.verify_credentials().screen_name)))
     client.filter(expansions=["author_id", "referenced_tweets.id", "in_reply_to_user_id"], tweet_fields=["author_id", "conversation_id"])
 
 

@@ -9,6 +9,9 @@ class ReplyStream(StreamingClient):
         # 取得したツイートの author がボット自身である場合、何も反応しない。
         if tweet.author_id == API.verify_credentials().id:
             pass
+        # リツイートを無視
+        elif "RT" in tweet.text:
+            pass
         else:
             # `!ignore` が付加されているツイートには、返信しない。
             if "!ignore" not in tweet.text:
