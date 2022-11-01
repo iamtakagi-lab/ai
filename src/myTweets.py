@@ -58,6 +58,7 @@ def load_tweets_line():  # Return tweets as array
     with open("data/tweets.txt", "r") as f:
         tweets = [s.strip() for s in f.readlines()]
         tweets = list(filter(None, tweets))
+        tweets = [t.replace(' ', '') for t in tweets]
     return tweets
 
 def random_tweet():  # Return random one tweet as string
