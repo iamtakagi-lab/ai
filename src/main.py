@@ -24,6 +24,7 @@ def cron_tweet():
     tweet()
 
 # Reply streaming
+@sched.scheduled_job('interval', id='reply_stream', seconds=60)
 def reply_stream():
     client = ReplyStream(bearer_token=os.environ["TWITTER_BEARER"])
     client.add_rules(tweepy.StreamRule("@{} -from:{} -filter:retweets".format(API.verify_credentials().screen_name, API.verify_credentials().screen_name)))
@@ -31,8 +32,7 @@ def reply_stream():
 
 
 sched.start()
-stream_thread = threading.Thread(target=reply_stream, name="stream")
-stream_thread.start()
+
 
 # Flask app for JSON api, etc.
 app = Flask(__name__)
