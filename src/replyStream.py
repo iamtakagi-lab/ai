@@ -1,37 +1,38 @@
-from tweepy import Stream, StreamListener
-from constants import API
-from generateModel import generate_model
-from makeSentence import make_sentence
-from myTweets import fetch_tweets, load_tweets
+from tweepy import StreamingClient
+from constants import API, CLIENT
+from generateReply import generate_reply
+from utils import get_reference_code, get_twitter_text_count
 
-class ReplyStreamListener(StreamListener):
+class ReplyStream(StreamingClient):
+    def on_tweet(self, tweet):
 
-    def on_status(self, status):
-        print("[Info] Retrieved tweet: ", status.text)
-        if not load_tweets():
-            fetch_tweets()
-            generate_model()
-        reply_msg = "@{} {}".format(status.user.screen_name, make_sentence())
-        if reply_msg == None: pass
-        if "@iamtakagi_ai" in reply_msg:
+        # 取得したツイートの author がボット自身である場合、何も反応しない。
+        if tweet.author_id == API.verify_credentials().id:
             pass
-            print("This tweet contains reply to @iamtakagi_ai, skipped.")
+        # リツイートを無視
+        elif "RT" in tweet.text:
+            pass
         else:
-            API.update_status(reply_msg, in_reply_to_status_id=status.id)
-            print("Sent tweet: {}".format(reply_msg))
+            # `!ignore` が付加されているツイートには、返信しない。
+            if "!ignore" not in tweet.text:
+                try:
+                    reply_msg = generate_reply(tweet.text, tweet.conversation_id)
+                except Exception as e:
+                    reply_msg = "問題が発生しました ({}, 照会用コード: {})".format(e.args[0], get_reference_code())
+
+                if reply_msg is None:
+                    print("[info] reply_msg is None. Skipping.")
+
+                # Truncate reply message if it exceeds 260 chars
+                if (get_twitter_text_count(reply_msg) > 260):
+                    reply_msg = reply_msg[:260] + " ... (省略されました)"
+
+                else:
+                    API.update_status(reply_msg, in_reply_to_status_id=tweet.id, auto_populate_reply_metadata=True)
+                    print("Sent tweet: {}".format(reply_msg))
+
+            # 返信しない場合は、いいね で反応する。
+            else:
+                CLIENT.like(tweet_id=tweet.id)
+
         return True
-
-    def on_error(self, status_code):
-        if status_code == 420:
-            print('[Error] 420')
-            return False
-        else:
-            print(f'[Error] {status_code}')
-            return False
-
-class ReplyStream():
-    def __init__(self, auth, listener):
-        self.stream = Stream(auth=auth, listener=listener)
-
-    def start(self):
-        self.stream.filter(track=["@iamtakagi_ai"])

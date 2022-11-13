@@ -1,0 +1,32 @@
+# fly.toml file generated for red-violet-2800 on 2022-10-22T09:07:25+09:00
+
+app = "nameless-darkness-587"
+
+[env]
+  HOST = "0.0.0.0"
+  PORT = "8080"
+  TZ = "Asia/Tokyo"
+  USERS = "yude_jp"
+
+[[services]]
+  internal_port = 8080
+  protocol = "tcp"
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = "80"
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = "443"
+
+  [[services.tcp_checks]]
+    interval = 10000
+    timeout = 2000
+
+[mounts]
+  source="ai_data"
+  destination="/app/data"
