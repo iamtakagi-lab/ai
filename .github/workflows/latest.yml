@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKER_BASE_NAME: ghcr.io/yuderobot/ai
+  DOCKER_BASE_NAME: ghcr.io/iamtakagi/ai
 
 jobs:
   build:
