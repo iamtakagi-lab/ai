@@ -28,5 +28,5 @@ app = "ai"
     timeout = 2000
 
 [mounts]
-  source="ai_data"
+  source="data"
   destination="/app/data"
